@@ -1,7 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="Portfolio Architect Banner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 # Portfolio Architect
 
 A powerful web application that generates complete, customizable portfolio websites from your resume. Built by **Baladitya**.
@@ -160,7 +156,7 @@ npm run preview
 
 ## 📄 License
 
-Created by **Baladitya** - Portfolio Architect Project
+Created by **sm00th** - Portfolio Architect Project
 
 ## 🤝 Contributing
 
