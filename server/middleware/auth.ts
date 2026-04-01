@@ -25,7 +25,6 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction) => 
   }
 };
 
-// Optional middleware to attach user if token exists
 export const optionalAuth = (req: AuthRequest, res: Response, next: NextFunction) => {
   let token;
 
@@ -38,7 +37,6 @@ export const optionalAuth = (req: AuthRequest, res: Response, next: NextFunction
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as any;
       req.user = { id: decoded.id };
     } catch (error) {
-      // Token invalid, continue without user
     }
   }
 

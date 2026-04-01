@@ -6,7 +6,6 @@ import JSZip from 'jszip';
 import { Highlight, themes } from 'prism-react-renderer';
 import { WebContainer } from '@webcontainer/api';
 
-// Singleton to prevent double-booting
 let webcontainerPromise: Promise<WebContainer> | null = null;
 
 interface ProjectWorkspaceProps {
@@ -22,15 +21,14 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
   const [sandboxLoading, setSandboxLoading] = useState(false);
   const sandboxRef = useRef<HTMLDivElement>(null);
 
-  // Improved detection logic
   const detectProjectType = () => {
     const files = result.files.map(f => f.path);
     const hasPackageJson = files.includes('package.json');
     const hasIndexHtml = files.includes('index.html');
     
-    if (hasPackageJson) return 'webcontainer'; // React, Vite, Next.js, etc.
-    if (hasIndexHtml) return 'html';           // Simple HTML/JS/CSS
-    return 'html';                             // Fallback
+    if (hasPackageJson) return 'webcontainer';
+    if (hasIndexHtml) return 'html';
+    return 'html';
   };
 
   const assembleHtmlProject = (): string => {
@@ -50,7 +48,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
   };
 
   useEffect(() => {
-    // 1. Log immediately to see if effect is even running
     console.log('🔄 Effect triggered. ViewMode:', viewMode);
 
     if (viewMode !== 'live') return;
@@ -67,7 +64,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
       console.log('🚀 initializeWebContainer starting...');
       setSandboxLoading(true);
 
-      // Wait for the ref to be available in the DOM
       let waitAttempts = 0;
       while (!sandboxRef.current && waitAttempts < 20) {
         await new Promise(r => setTimeout(r, 100));
@@ -80,7 +76,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
       }
 
       try {
-        // UI Loader
         sandboxRef.current.innerHTML = `
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:white;background:#0f172a;font-family:sans-serif;gap:16px;">
             <div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite;"></div>
@@ -95,7 +90,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
           if (el) el.innerText = msg;
         };
 
-        // 2. Boot
         if (!webcontainerPromise) {
           console.log('⚡ Calling WebContainer.boot()...');
           webcontainerPromise = WebContainer.boot();
@@ -103,7 +97,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
         const webcontainer = await webcontainerPromise;
         console.log('✅ WebContainer booted successfully');
 
-        // 3. Mount Files (Recursive Folder Support)
         updateStatus('Mounting files...');
         const fileSystemTree: any = {};
         result.files.forEach(file => {
@@ -120,11 +113,9 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
         await webcontainer.mount(fileSystemTree);
         console.log('✅ Files mounted into virtual FS');
 
-        // 4. NPM Install
         updateStatus('Installing dependencies (this may take a minute)...');
         const installProcess = await webcontainer.spawn('npm', ['install']);
         
-        // Pipe npm output to console
         installProcess.output.pipeTo(new WritableStream({
           write(data) { console.log('📦 npm:', data); }
         }));
@@ -133,7 +124,6 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
         if (installExitCode !== 0) throw new Error('npm install failed');
         console.log('✅ Dependencies installed');
 
-        // 5. Server Start & Iframe Injection
         updateStatus('Starting server...');
         
         webcontainer.on('server-ready', (port, url) => {
@@ -146,7 +136,7 @@ export default function ProjectWorkspace({ result, onBack, onLogout }: ProjectWo
             iframe.style.border = 'none';
             iframe.style.background = 'white';
             
-            sandboxRef.current.innerHTML = ''; // Clear loader
+            sandboxRef.current.innerHTML = '';
             sandboxRef.current.appendChild(iframe);
             setSandboxLoading(false);
           }

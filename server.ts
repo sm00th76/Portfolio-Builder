@@ -15,7 +15,6 @@ async function startServer() {
   const app = express();
   const PORT = 5003;
 
-  // Connect to MongoDB
   if (process.env.MONGO_URI) {
     try {
       await mongoose.connect(process.env.MONGO_URI);
@@ -27,34 +26,27 @@ async function startServer() {
     console.warn('⚠️ MONGO_URI not set - skipping MongoDB connection');
   }
 
-  // CORS configuration
   app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : 'http://localhost:5173',
     credentials: true
   }));
 
-  // 👇 ADDED: Cross-Origin Isolation Headers for WebContainers 👇
-  // This is required to enable SharedArrayBuffer in the browser
   app.use((req, res, next) => {
     res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     next();
   });
-  // 👆 ---------------------------------------------------- 👆
 
   app.use(express.json({ limit: '50mb' }));
 
-  // Auth routes
   app.post('/api/auth/signup', signup);
   app.post('/api/auth/login', login);
   app.get('/api/auth/me', protect, getMe);
 
-  // API routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });
 
-  // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { 
@@ -65,7 +57,6 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    // Serve static files in production
     app.use(express.static(path.join(__dirname, "dist")));
     app.get("*", (req, res) => {
       res.sendFile(path.join(__dirname, "dist", "index.html"));

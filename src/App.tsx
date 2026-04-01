@@ -16,12 +16,10 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Check authentication status on mount
   useEffect(() => {
     const checkAuth = async () => {
       try {
         if (authService.isAuthenticated()) {
-          // Optionally verify token is still valid
           await authService.getCurrentUser();
           setIsAuthenticated(true);
         }
@@ -37,7 +35,6 @@ export default function App() {
     checkAuth();
   }, []);
 
-  // Check for test mode on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('test') === 'sandbox') {
@@ -58,7 +55,6 @@ export default function App() {
     setIsLoading(true);
     setLoadingStep(0);
     
-    // Progress simulation for user feedback
     const interval = setInterval(() => {
       setLoadingStep(prev => (prev < loadingMessages.length - 1 ? prev + 1 : prev));
     }, 3000);
@@ -75,12 +71,10 @@ export default function App() {
     }
   };
 
-  // Test mode - skip to sandbox testing
   if (testMode) {
     return <SandboxTester />;
   }
 
-  // Show loading while checking auth
   if (authLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -92,7 +86,6 @@ export default function App() {
     );
   }
 
-  // Show login if not authenticated
   if (!isAuthenticated) {
     return (
       <LoginSignup 
@@ -109,7 +102,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Logout button - only show when not in workspace */}
       {!result && (
         <div className="fixed top-4 right-4 z-40">
           <button

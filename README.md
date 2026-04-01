@@ -156,7 +156,7 @@ npm run preview
 
 ## 📄 License
 
-Created by **Baladitya** - Portfolio Architect Project
+Created by **sm00th** - Portfolio Architect Project
 
 ## 🤝 Contributing
 

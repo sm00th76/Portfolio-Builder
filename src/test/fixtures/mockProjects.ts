@@ -1,6 +1,5 @@
 import { GenerationResult } from '../../types';
 
-// Mock HTML + CSS + Vanilla JS Project
 export const mockHtmlProject: GenerationResult = {
   explanation: 'A beautiful vanilla HTML, CSS, and JavaScript portfolio showcasing responsive design and smooth scrolling navigation.',
   files: [
@@ -127,7 +126,6 @@ body {
       path: 'script.js',
       content: `console.log('Portfolio loaded!');
 
-// Simple smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -141,7 +139,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   ],
 };
 
-// Mock React + Tailwind Project with package.json
 export const mockReactProject: GenerationResult = {
   explanation: 'A modern React portfolio built with Tailwind CSS, featuring interactive components, smooth gradients, and responsive grid layouts. Includes a click counter to demonstrate state management.',
   files: [
@@ -208,7 +205,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 to-pink-600">
-      {/* Navigation */}
       <nav className="bg-black bg-opacity-50 text-white p-4">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold">Portfolio</h1>
@@ -220,7 +216,6 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-white text-center">
         <h2 className="text-5xl font-bold mb-4">Full Stack Developer</h2>
         <p className="text-xl mb-8">Building amazing web experiences</p>
@@ -232,7 +227,6 @@ export default function App() {
         </button>
       </section>
 
-      {/* Projects */}
       <section className="max-w-4xl mx-auto px-4 pb-20">
         <h3 className="text-3xl font-bold text-white mb-8">Featured Projects</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -273,7 +267,6 @@ code {
   ],
 };
 
-// Mock Next.js Project
 export const mockNextProject: GenerationResult = {
   explanation: 'A Next.js 14 portfolio with TypeScript support, featuring file-based routing and server-side capabilities. Styled with Tailwind CSS for excellent performance and scalability.',
   files: [
