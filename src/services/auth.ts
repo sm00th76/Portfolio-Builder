@@ -16,22 +16,18 @@ export interface User {
   name: string;
 }
 
-// Store token in localStorage
 const setToken = (token: string) => {
   localStorage.setItem('authToken', token);
 };
 
-// Get token from localStorage
 export const getToken = () => {
   return localStorage.getItem('authToken');
 };
 
-// Remove token
 export const removeToken = () => {
   localStorage.removeItem('authToken');
 };
 
-// Get auth header
 const getAuthHeader = () => {
   const token = getToken();
   return token ? { Authorization: `Bearer ${token}` } : {};

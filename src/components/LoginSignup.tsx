@@ -54,7 +54,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
       className="min-h-screen bg-gradient-to-br from-slate-900 via-brand-900 to-slate-900 flex items-center justify-center p-4"
     >
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold tracking-tight mb-2 font-serif italic text-white">
             Portfolio Architect
@@ -64,14 +63,12 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
           </p>
         </div>
 
-        {/* Form Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white bg-opacity-10 backdrop-blur-xl rounded-2xl p-8 border border-white border-opacity-20 shadow-2xl"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name field (signup only) */}
             {isSignup && (
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-400 text-gray">
@@ -90,7 +87,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
               </div>
             )}
 
-            {/* Email field */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate text-gray-400">
                 <Mail size={16} />
@@ -107,7 +103,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
               />
             </div>
 
-            {/* Password field */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-semibold text-slate text-gray-400">
                 <Lock size={16} />
@@ -124,7 +119,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
               />
             </div>
 
-            {/* Error message */}
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -135,7 +129,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
               </motion.div>
             )}
 
-            {/* Submit button */}
             <button
               type="submit"
               disabled={loading}
@@ -154,7 +147,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
               )}
             </button>
 
-            {/* Toggle signup/login */}
             <div className="text-center text-slate-300 text-sm">
               {isSignup ? "Already have an account? " : "Don't have an account? "}
               <button
@@ -172,7 +164,6 @@ export default function LoginSignup({ onSuccess }: LoginSignupProps) {
           </form>
         </motion.div>
 
-        {/* Footer */}
         <p className="text-center text-slate-400 text-sm mt-8">
           Secure authentication powered by MongoDB Atlas
         </p>
