@@ -1,23 +1,13 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
-import User from '../../server/models/User';
+import { connectDB } from '../lib/db.js';
+import User from '../models/User.js';
 
 const generateToken = (userId: string) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET || 'secret', {
     expiresIn: '7d'
   });
 };
-
-async function connectDB() {
-  if (mongoose.connection.readyState >= 1) return;
-  
-  if (!process.env.MONGO_URI) {
-    throw new Error('MONGO_URI environment variable is not set');
-  }
-  
-  await mongoose.connect(process.env.MONGO_URI);
-}
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== 'POST') {
