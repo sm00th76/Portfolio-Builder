@@ -1,4 +1,4 @@
-const API_URL = 'portfolio-builder-sigma-puce.vercel.app/api';
+const API_URL = '/api';
 
 export interface AuthResponse {
   success: boolean;
