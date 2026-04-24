@@ -1,6 +1,17 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../../server/models/User';
+
+async function connectDB() {
+  if (mongoose.connection.readyState >= 1) return;
+  
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI environment variable is not set');
+  }
+  
+  await mongoose.connect(process.env.MONGO_URI);
+}
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== 'GET') {
@@ -20,6 +31,8 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   }
 
   try {
+    await connectDB();
+
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
 
@@ -45,6 +58,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     });
   } catch (error) {
     console.error('Auth error:', error);
-    res.status(401).json({ message: 'Invalid token' });
+    const message = error instanceof Error ? error.message : 'Invalid token';
+    res.status(401).json({ message });
   }
 };

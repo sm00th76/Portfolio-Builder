@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../../server/models/User';
 
 const generateToken = (userId: string) => {
@@ -7,6 +8,16 @@ const generateToken = (userId: string) => {
     expiresIn: '7d'
   });
 };
+
+async function connectDB() {
+  if (mongoose.connection.readyState >= 1) return;
+  
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI environment variable is not set');
+  }
+  
+  await mongoose.connect(process.env.MONGO_URI);
+}
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   if (req.method !== 'POST') {
@@ -26,6 +37,8 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   }
 
   try {
+    await connectDB();
+
     const { email, password, name } = req.body;
 
     if (!email || !password || !name) {
@@ -56,6 +69,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ message: 'Server error during signup' });
+    const message = error instanceof Error ? error.message : 'Server error during signup';
+    res.status(500).json({ message });
   }
 };
